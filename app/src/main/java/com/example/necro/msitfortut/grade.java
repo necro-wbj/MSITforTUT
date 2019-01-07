@@ -16,7 +16,6 @@ import android.widget.TextView;
 public class grade extends AppCompatActivity {
 
     MyDBHelper mDbHelper = new MyDBHelper(this);
-    String course;
 
     @Override
     protected void onCreate(Bundle savedInstanceState) {
@@ -27,13 +26,13 @@ public class grade extends AppCompatActivity {
         final String course = intent.getStringExtra("course");
 
         SQLiteDatabase db = mDbHelper.getReadableDatabase();
-        Cursor cursor = db.query("pac",null,"course=?",new String[]{course},null,null,null);
+        Cursor cursor = db.query("course",null,"name=?",new String[]{course},null,null,null);
         ArrayAdapter<String> adapter = new ArrayAdapter<String>(this, android.R.layout.simple_list_item_1);
 
         TextView textView = findViewById(R.id.gtextView);
         while (cursor.moveToNext()) {
-            Log.e("course找到資料",cursor.getString(2));
-            textView.setText(textView.getText()+cursor.getString(2));
+            Log.e("course找到資料",cursor.getString(0)+cursor.getString(1)+cursor.getString(2));
+            textView.setText(textView.getText()+cursor.getString(1));
         }
         findViewById(R.id.button4).setOnClickListener(new View.OnClickListener() {
             @Override
@@ -42,8 +41,9 @@ public class grade extends AppCompatActivity {
                 ContentValues values = new ContentValues();
                 EditText editText = findViewById(R.id.score);
                 int grade = Integer.parseInt(String.valueOf(editText.getText()));
+                Log.e("分數",""+grade);
                 values.put("grade",grade);
-                db.update("course",values,"course=?",new String[]{course});
+                db.update("course",values,"name=?",new String[]{course});
                 finish();
             }
         });
