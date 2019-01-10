@@ -32,7 +32,7 @@ public class grade extends AppCompatActivity {
         TextView textView = findViewById(R.id.gtextView);
         while (cursor.moveToNext()) {
             Log.e("course找到資料",cursor.getString(0)+cursor.getString(1)+cursor.getString(2));
-            textView.setText(textView.getText()+cursor.getString(1));
+            textView.setText(textView.getText()+cursor.getString(1)+"(分數: "+cursor.getString(2)+")");
         }
         findViewById(R.id.button4).setOnClickListener(new View.OnClickListener() {
             @Override
@@ -40,10 +40,12 @@ public class grade extends AppCompatActivity {
                 SQLiteDatabase db = mDbHelper.getReadableDatabase();
                 ContentValues values = new ContentValues();
                 EditText editText = findViewById(R.id.score);
-                int grade = Integer.parseInt(String.valueOf(editText.getText()));
-                Log.e("分數",""+grade);
-                values.put("grade",grade);
-                db.update("course",values,"name=?",new String[]{course});
+                String grade = String.valueOf(editText.getText());
+                Log.e("分數",grade);
+                if (!grade.equals("")) {
+                    values.put("grade", Integer.parseInt(grade));
+                    db.update("course",values,"name=?",new String[]{course});
+                }
                 finish();
             }
         });

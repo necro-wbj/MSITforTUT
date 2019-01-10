@@ -10,6 +10,7 @@ import android.util.Log;
 import android.view.View;
 import android.widget.ArrayAdapter;
 import android.widget.ListView;
+import android.widget.ProgressBar;
 import android.widget.TextView;
 
 public class schedule extends AppCompatActivity {
@@ -29,7 +30,12 @@ public class schedule extends AppCompatActivity {
         Log.e("SharedPreferences",profession);
         Cursor cursor = db.query("course,profession,pac", null, "course.name=pac.course and pac.profession=? and pac.profession=profession.name and course.grade>=60", new String[]{profession}, null, null, null);
         ArrayAdapter<String> adapter = new ArrayAdapter<String>(this, android.R.layout.simple_list_item_1);
-
+        Cursor mcursor = db.query("course,profession,pac", null, "course.name=pac.course and pac.profession=? and pac.profession=profession.name", new String[]{profession}, null, null, null);
+        int progress = cursor.getCount();
+        int max = mcursor.getCount();
+        ((TextView)findViewById(R.id.textView)).setText(progress+"/"+max);
+        ((ProgressBar)findViewById(R.id.progressBar)).setMax(max);
+        ((ProgressBar)findViewById(R.id.progressBar)).setProgress(progress);
         ((ListView) findViewById(R.id.sclist)).setAdapter(adapter);
         while (cursor.moveToNext()) {
             String msg="";
