@@ -28,20 +28,16 @@ public class profession extends AppCompatActivity {
             Log.d("profession找到值",cursor.getString(1));
             adapter.add(cursor.getString(1));
         }
-        ((ListView) findViewById(R.id.list)).setAdapter(adapter);
-        ((ListView) findViewById(R.id.list)).setOnItemClickListener(new AdapterView.OnItemClickListener() {
+        final ListView mListView =findViewById(R.id.list);
+        mListView.setAdapter(adapter);
+        mListView.setOnItemClickListener(new AdapterView.OnItemClickListener() {
             @Override
             public void onItemClick(AdapterView<?> parent, View view, int position, long id) {
                 String data = "沒有值";
-                SQLiteDatabase db = mDbHelper.getReadableDatabase();
-                Cursor cursor = db.query("profession", null, "_id=" + id+1, null, null, null, null, null);
-                while (cursor.moveToNext()) {
-                    data = cursor.getString(1);
-                }
+                data = (String) mListView.getItemAtPosition(position);
                 SharedPreferences save =profession.this.getSharedPreferences("data",0);
                 save.edit().putString("profession",data).apply();
                 Log.d("profession傳值", data);
-
                 Intent intent = new Intent(profession.this, course.class);
                 intent.putExtra("profession", data);
                 startActivity(intent);

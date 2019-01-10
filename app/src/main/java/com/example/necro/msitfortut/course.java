@@ -27,7 +27,7 @@ public class course extends AppCompatActivity {
         ArrayAdapter<String> adapter = new ArrayAdapter<String>(this, android.R.layout.simple_list_item_1);
 
         while (cursor.moveToNext()) {
-            Log.d("course找到資料",cursor.getString(2));
+            Log.e("course找到資料",cursor.getString(2));
             adapter.add(cursor.getString(2));
         }
         ListView listView = findViewById(R.id.listview);
@@ -40,7 +40,7 @@ public class course extends AppCompatActivity {
             for (int i = lcursor.getColumnCount()-1; i >= 0; i--) {
                 msg = msg + lcursor.getString(i);
             }
-            Log.e("找到證照",msg);
+            Log.e("course找到證照",msg);
             ladapter.add(lcursor.getString(2));
         }
         ((ListView)findViewById(R.id.lclist)).setAdapter(ladapter);
